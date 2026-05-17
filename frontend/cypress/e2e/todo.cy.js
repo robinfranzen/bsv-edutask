@@ -1,7 +1,4 @@
-// cypress/e2e/todo.cy.js
-//
-// E2E tests for EduTask R8 (manipulate the todolist of a task)
-// Test cases derived using the 4-step technique.
+
 
 const TEST_EMAIL = 'student@test.com'
 const FIRST_NAME = 'Test'
@@ -10,8 +7,7 @@ const API_BASE   = 'http://localhost:5000'
 
 describe('R8 - Todo Management GUI Tests', () => {
 
-  // ---- helpers ----
-
+  
   const addTodo = (todo) => {
     cy.intercept('POST', `${API_BASE}/todos/create`).as('createTodo')
     cy.intercept('GET',  `${API_BASE}/tasks/byid/**`).as('taskRefresh')
@@ -37,10 +33,7 @@ describe('R8 - Todo Management GUI Tests', () => {
     cy.wait('@taskRefresh')
   }
 
-  // The app fires a GET *before* the DELETE lands, re-rendering from stale
-  // data. No amount of intercept waiting can fix this — the only reliable
-  // approach is to wait for the DELETE, then re-login and re-open the task
-  // so the page fetches fresh data from scratch.
+  .
   const deleteTodo = (text) => {
     cy.intercept('DELETE', `${API_BASE}/todos/byid/**`).as('deleteTodo')
     cy.contains('span.editable', text)
@@ -50,8 +43,7 @@ describe('R8 - Todo Management GUI Tests', () => {
     cy.wait('@deleteTodo')
   }
 
-  // Re-login and re-open the last task. Used after deleteTodo to get a
-  // clean render from the server (post-deletion state).
+  
   const reopenLastTask = () => {
     cy.visit('http://localhost:3000')
     cy.get('#email').clear().type(TEST_EMAIL)
@@ -88,9 +80,7 @@ describe('R8 - Todo Management GUI Tests', () => {
     cy.wait(1000)
   })
 
-  /* ============================================================
-     R8UC1 — Add a new todo item
-     ============================================================ */
+  
   describe('R8UC1 - Create Todo', () => {
 
     it('TC1 - Valid description creates an active todo at the bottom', () => {
@@ -117,9 +107,7 @@ describe('R8 - Todo Management GUI Tests', () => {
     })
   })
 
-  /* ============================================================
-     R8UC2 — Toggle an existing todo
-     ============================================================ */
+
   describe('R8UC2 - Toggle Todo', () => {
 
     it('TC4 - Active → Done: todo item receives done styling', () => {
@@ -156,9 +144,7 @@ describe('R8 - Todo Management GUI Tests', () => {
     })
   })
 
-  /* ============================================================
-     R8UC3 — Delete an existing todo
-     ============================================================ */
+ 
   describe('R8UC3 - Delete Todo', () => {
 
     it('TC6 - Deleting one todo removes it but keeps the others', () => {
@@ -166,7 +152,7 @@ describe('R8 - Todo Management GUI Tests', () => {
       addTodo('Delete me')
       addTodo('Keep me 2')
       deleteTodo('Delete me')
-      // Re-login so the page fetches fresh post-deletion data.
+      
       reopenLastTask()
       cy.contains('span.editable', 'Delete me').should('not.exist')
       cy.contains('span.editable', 'Keep me 1').should('exist')
