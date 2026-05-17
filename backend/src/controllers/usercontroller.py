@@ -1,6 +1,6 @@
-from src.controllers.controller import Controller
-from src.util.dao import DAO
 
+from src.util.dao import DAO
+from src.controllers.controller import Controller
 import re
 
 emailValidator = re.compile(r".*@.*")
